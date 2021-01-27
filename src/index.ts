@@ -13,6 +13,7 @@ async function main() {
   //   fs.rmdirSync(tmpDir, { recursive: true });
   // }
   // fs.mkdirSync(tmpDir);
+
   createPackage(tmpDir);
 
   bundle(tmpDir);
