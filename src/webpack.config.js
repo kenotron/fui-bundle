@@ -13,7 +13,7 @@ function getRootComponents(tmpDir) {
   const rootComponentsExposes = {};
   for (const component of rootComponents) {
     rootComponentsExposes[
-      `./react/lib/${component}`
+      `./lib/${component}`
     ] = `@fluentui/react/lib/${component}`;
   }
 
@@ -22,14 +22,13 @@ function getRootComponents(tmpDir) {
 
 function getPackageExposes() {
   const packages = [
-    "react-cards",
-    "react-date-time",
-    "react-hooks",
-    "react-flex",
-    "react-tabs",
-    "react-slider",
-    "react-button",
-    "react-focus",
+    "date-time-utilities",
+    "font-icons-mdl2",
+    "merge-styles",
+    "scheme-utilities",
+    "style-utilities",
+    "theme",
+    "utilities",
   ];
 
   return packages.reduce((agg, pkg) => {
@@ -45,13 +44,14 @@ module.exports = {
   cache: false,
   plugins: [
     new webpack.container.ModuleFederationPlugin({
-      name: "fluentuiReactMeta",
+      name: "fluentuiReact",
       filename: "remoteEntry.js",
       exposes: {
         ...getRootComponents(process.env.TMP_DIR),
-        "./react/lib/compat/Button": "@fluentui/react/lib/compat/Button",
-        "./react": "@fluentui/react/lib/index",
-        ...getPackageExposes(),
+        "./lib/compat/Button": "@fluentui/react/lib/compat/Button",
+        ".": "@fluentui/react/lib/index",
+        "./tabs": "@fluentui/react-tabs",
+        "./internal": "@fluentui/react-internal/lib/index",
       },
       shared: {
         react: { singleton: true },
