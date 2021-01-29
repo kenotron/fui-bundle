@@ -1,0 +1,13 @@
+* Build actions
+** TODO pick VM image
+** TODO npm i / yarn
+** TODO build
+** TODO run
+#+BEGIN_SRC sh
+node dist/index.js --target /output
+#+END_SRC
+*** TODO Needs to spit out version in text file
+*** TODO needs to write output to --target
+** TODO slurp version
+** TODO azcopy to storage
+** TODO ping manifest server with version registration
