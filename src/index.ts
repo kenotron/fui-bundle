@@ -3,20 +3,15 @@ import fs from "fs";
 import os from "os";
 import { createPackage } from "./createPackage";
 import { bundle } from "./bundle";
+import { promisify } from 'util';
 
+const mkdtempAsync = promisify(fs.mkdtemp);
 async function main() {
-  const tmpDir = path.join(os.tmpdir(), "fluentui-mf");
-
-  console.log(`Working directory: ${tmpDir}`);
-
-  // if (fs.existsSync(tmpDir)) {
-  //   fs.rmdirSync(tmpDir, { recursive: true });
-  // }
-  // fs.mkdirSync(tmpDir);
-
-  createPackage(tmpDir);
-
-  bundle(tmpDir);
+    const location = await mkdtempAsync(path.join(os.tmpdir(), "fluentui-mf"));
+    process.env['TMP_DIR'] = location;
+    process.chdir(location);
+    await createPackage();
+    await bundle();
 }
 
 main();

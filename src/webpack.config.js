@@ -39,7 +39,7 @@ function getPackageExposes() {
 module.exports = {
   entry: {},
   output: {
-    path: path.join(__dirname, "../dist"),
+      path: path.join(process.cwd(), "dist"),
   },
   cache: false,
   plugins: [
