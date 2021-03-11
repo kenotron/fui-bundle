@@ -14,14 +14,23 @@ export async function createPackage(repoDir) {
     name: "fluentui-bundle",
     version: "1.0.0",
     dependencies: {
+      react: "latest",
+      "react-dom": "latest",
       "@fluentui/react": "beta",
+
+      "react-loadable": "latest",
     },
   };
 
-  fs.copyFileSync(path.join(__dirname, "../package/core.js"), repoDir);
-
+  for (const f of fs.readdirSync(path.join(__dirname, "../package"))) {
+    fs.mkdirSync(path.join(repoDir, "lib"), { recursive: true });
+    fs.copyFileSync(
+      path.join(__dirname, `../package/${f}`),
+      path.join(repoDir, "lib", f)
+    );
+  }
   await writeFileAsync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-  const { stdout, stderr } = await execAsync("yarn");
+  const { stdout, stderr } = await execAsync("yarn", { cwd: repoDir });
   if (stderr) {
     console.error(stderr);
   }

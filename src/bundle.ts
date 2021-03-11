@@ -1,22 +1,19 @@
 import fs from "fs";
 import path from "path";
-import { exec } from "child_process";
+import execa from "execa";
 import { promisify } from "util";
-const execAsync = promisify(exec);
 
 export async function bundle(repoDir) {
   const webpack = require.resolve("webpack/bin/webpack.js");
-  const webpackConfigPath = path.join(__dirname, "webpack.config.js");
-  const { stdout, stderr } = await execAsync(
-    `node ${webpack} --config ${webpackConfigPath}`,
-    {
+  const webpackConfigPath = path.join(__dirname, "webpack.config.ts");
+  try {
+    await execa(`node ${webpack} --config ${webpackConfigPath} --progress`, {
       env: {
         REPO_DIR: repoDir,
       },
-    }
-  );
-  if (stderr) {
-    console.error(stderr);
+      stdio: "inherit",
+    });
+  } catch (e) {
+    console.error(e);
   }
-  console.log(stdout);
 }
